@@ -41,6 +41,7 @@ h1 {
 
 .photographer_section a {
     display: block;
+    text-decoration: none;
 }
 
 .photographer_section article h2 {
@@ -73,5 +74,5 @@ h1 {
 }
 
 .text_price {
-    color: #525252;
+    color: #525252 ;
 }

@@ -3,9 +3,34 @@
 }
 
 .photograph-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+}
+
+.photograph-name {
+    color: #D3573C;
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.photograph-location {
+    font-size: 22px;
+    color: #901C1C;
+    margin: .5em 0 0 0;
+}
+
+.photograph-img {
+    height: 200px;
+    width: 200px;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    order: 3;
 }
 
 .contact_button {
@@ -19,6 +44,7 @@
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
+    order: 2;
 }
 
 .modal {
