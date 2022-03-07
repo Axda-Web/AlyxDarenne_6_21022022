@@ -1,29 +1,20 @@
-    async function getPhotographers() {
-        
-        //Récupération des données présentes dans le fichier photographers.json
-        const photographers = []
-
-        let jsonData = await fetch('../../data/photographers.json')
-        let data = await jsonData.json()
-        data.photographers.forEach(photographer => photographers.push(photographer))
-
-        return ({
-            photographers: [...photographers]})
-    }
+    import apiManager from '../models/apiManager.js'
+    
 
     async function displayData(photographers) {
         const photographersSection = document.querySelector(".photographer_section");
-
+        let photographerContent = "";
         photographers.forEach((photographer) => {
-            const photographerModel = photographerFactory(photographer);
-            const userCardDOM = photographerModel.getUserCardDOM();
-            photographersSection.appendChild(userCardDOM);
+            photographerContent += photographer.getUserCardDOM();
         });
+
+        photographersSection.innerHTML = photographerContent
     };
 
     async function init() {
         // Récupère les datas des photographes
-        const { photographers } = await getPhotographers();
+        await apiManager.init();
+        const photographers = await apiManager.getPhotographers();
         displayData(photographers);
     };
     
