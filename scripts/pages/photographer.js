@@ -1,6 +1,4 @@
 import apiManager from '../models/apiManager.js'
-import Photographer from '/scripts/models/photographer.js'
-import Media from '/scripts/models/media.js'
 
 
 //Récupérer l'ID du photographe selectionné via l'URL
@@ -23,8 +21,7 @@ function displayPhotogapherMedia(currentPhotographerMedia) {
         let mediaGridContent = ''
 
         currentPhotographerMedia.forEach(media => {
-            const mediaObj = new Media(media)
-            return mediaGridContent += mediaObj.getMediaCardDOM()
+            return mediaGridContent += media.getMediaCardDOM()
         })
 
         mediaGridElt.innerHTML = mediaGridContent
@@ -40,6 +37,15 @@ function  displayFixedBottomBlock(allLikes, price) {
                             <p>${price}€ / jour</p>`
     document.body.appendChild(orangeBlock)
 }
+
+
+
+//Incrémentation bouttons like
+function handleLikesBtnClick(event) {
+    this.parentNode.innerHTML = `${parseInt(this.parentNode.innerText) + 1} <i class="fas fa-heart likes-btn"></i>`
+    document.querySelector('.likes-total').innerHTML = `${parseInt(document.querySelector('.likes-total').innerText) + 1} <i class="fas fa-heart"></i>` 
+}
+
 
 
 //Affichage menu-déroulant filtres
@@ -60,20 +66,26 @@ function showFilters() {
 }
 
 
-//Fonctions permettants de filter les medias
-function filterMediaByPopularity() {
+//Fonctions permettants de filtrer les medias
+function filterMediaByPopularity(currentPhotographerMedia) {
+
     currentPhotographerMedia.sort((a, b) => b.likes - a.likes)
+    displayPhotogapherMedia(currentPhotographerMedia)
 }
 
-function filterMediaByDate() {
+function filterMediaByDate(currentPhotographerMedia) {
+
     currentPhotographerMedia.sort((a, b) => {
         let dateA = new Date(a.date)
         let dateB = new Date(b.date)
         return dateB - dateA
     })
+
+    displayPhotogapherMedia(currentPhotographerMedia)
 }
 
-function filterMediaByTitle() {
+function filterMediaByTitle(currentPhotographerMedia) {
+
     currentPhotographerMedia.sort((a, b) => {
     let nameA = a.title.toLowerCase()
     let nameB = b.title.toLowerCase()
@@ -86,29 +98,47 @@ function filterMediaByTitle() {
     }
     return 0;
     })
-}
 
+    displayPhotogapherMedia(currentPhotographerMedia)
+}
 
 async function  init() {
 
     await apiManager.init()
-    const data = await apiManager.data
+    
+    /*Remplacer ce code par en utilisant les méthodes de l'apiManager
+    const data = await <apiManager className="data" />*/
 
-    const currentPhotographerInfo = new Photographer(data.photographers.find(item => item.id == photographerId))
+    
+    const currentPhotographerInfo = apiManager.getPhotographerById(photographerId)
     displayPhotographerHeader(currentPhotographerInfo)
 
-    const currentPhotographerMedia = data.media.filter(item => item.photographerId == photographerId)
+    const currentPhotographerMedia = apiManager.getPhotographerMedia(photographerId)
     displayPhotogapherMedia(currentPhotographerMedia)
+    //Remplacer ce code par en utilisant les méthodes de l'apiManager - END*/
 
+    //Affichage block flottant bas de page contenant la totalité des likes + TJM
     const allLikes = currentPhotographerMedia.map(media => media.likes).reduce((acc, val) => acc + val)
     const { price } = currentPhotographerInfo
     displayFixedBottomBlock(price, allLikes)
 
+    //Gestion events menu déroulant filtres
     btnDropdownToggle.addEventListener('click', showFilters)
+
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
+
+    const popularityFilterBtn = document.getElementById('popularity-filter')
+    popularityFilterBtn.addEventListener('click', () => filterMediaByPopularity(currentPhotographerMedia))
+
+    const dateFilterBtn = document.getElementById('date-filter')
+    dateFilterBtn.addEventListener('click', () => filterMediaByDate(currentPhotographerMedia))
+
+    const titleFilterBtn = document.getElementById('title-filter')
+    titleFilterBtn.addEventListener('click', () => filterMediaByTitle(currentPhotographerMedia))
 }
 
 init()
-
 
 
 
