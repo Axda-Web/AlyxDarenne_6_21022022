@@ -47,6 +47,42 @@ function handleLikesBtnClick(event) {
 }
 
 
+//Gestion interaction formulaire de contact
+const modal = document.getElementById("contact_modal");
+const modalPhotographerName = document.querySelector('.photographer-name')
+
+function displayContactFormModal(name) {
+	modal.style.display = "block";
+    modalPhotographerName.innerText = name;
+}
+
+function closeContactFormModal() {
+    modal.style.display = "none";
+}
+
+function formSubmit(event) {
+    const firstname = document.getElementById('firstname')
+    const lastname = document.getElementById('lastname')
+    const email = document.getElementById('email')
+    const message = document.getElementById('message')
+    const form = document.getElementById('form')
+
+    event.preventDefault()
+
+    if (form.checkValidity()){
+        console.log(`
+        Prénom: ${firstname.value},
+        Nom: ${lastname.value},
+        Email: ${email.value},
+        Message: ${message.value}
+    `)
+    } else {
+        console.log('Merci de fournir des données valides.')
+    }
+    
+
+}
+
 
 //Affichage menu-déroulant filtres
 const btnDropdownToggle = document.querySelector('.dropdown-toggle')
@@ -106,21 +142,29 @@ async function  init() {
 
     await apiManager.init()
     
-    /*Remplacer ce code par en utilisant les méthodes de l'apiManager
-    const data = await <apiManager className="data" />*/
-
-    
     const currentPhotographerInfo = apiManager.getPhotographerById(photographerId)
     displayPhotographerHeader(currentPhotographerInfo)
 
     const currentPhotographerMedia = apiManager.getPhotographerMedia(photographerId)
     displayPhotogapherMedia(currentPhotographerMedia)
-    //Remplacer ce code par en utilisant les méthodes de l'apiManager - END*/
 
+    
     //Affichage block flottant bas de page contenant la totalité des likes + TJM
     const allLikes = currentPhotographerMedia.map(media => media.likes).reduce((acc, val) => acc + val)
-    const { price } = currentPhotographerInfo
+    const { price, name } = currentPhotographerInfo
     displayFixedBottomBlock(price, allLikes)
+
+    
+    //Gestion du modal contact form
+    const contactBtn = document.getElementById("open-modal-btn")
+    contactBtn.addEventListener('click', () => displayContactFormModal(name))
+
+    const closeBtn = document.getElementById("close-btn")
+    closeBtn.addEventListener('click', closeContactFormModal)
+
+    const formSubmitBtn = document.getElementById('submit-form')
+    formSubmitBtn.addEventListener('click', formSubmit)
+
 
     //Gestion events menu déroulant filtres
     btnDropdownToggle.addEventListener('click', showFilters)
@@ -139,66 +183,3 @@ async function  init() {
 }
 
 init()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-
-//Mise en page des données du photographe
-    async function displayHeaderData(currentPhotographer) {
-        const photographHeader = document.querySelector('.photograph-header')
-        photographHeader.innerHTML = currentPhotographer.getUserHeader()
-    }
-
-
-    async function displayMediaGrid(currentPhotographerMedia) {
-        const mediaGridContainer = document.querySelector('.media-grid')
-        let mediaContent = "";
-        currentPhotographerMedia.forEach( media => {
-            mediaContent += media.getMediaCardDOM();
-        });
-
-        mediaGridContainer.innerHTML = mediaContent
-    };
-
-    async function init() {
-        // Récupère les datas des photographes
-        await apiManager.init();
-
-        const currentPhotographer = await apiManager.getPhotographerById(photographerId);
-        displayHeaderData(currentPhotographer);
-
-        const currentPhotographerMedia = await apiManager.getPhotographerMedia(photographerId);
-        displayMediaGrid(currentPhotographerMedia)
-
-        
-
-        const  displayFixedBottomBlock = () => {
-            const orangeBlock = document.createElement('aside')
-            orangeBlock.classList.add('orange-box')
-            orangeBlock.innerHTML = `<p>Total Likes <i class="fas fa-heart"></i></p>
-                                    <p>${price}€ / jour</p>`
-            document.body.appendChild(orangeBlock)
-        }
-    
-        displayFixedBottomBlock()
-    };
-    
-    init(); 
-
-    */
-
-
-
-

@@ -25,7 +25,7 @@ export default class Photographer {
                     <p class="photograph-location">${this.city}, ${this.country}</p>
                     <p class="photograph-tagline">${this.tagline}</p>
                 </div>
-                <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+                <button class="contact_button" id="open-modal-btn">Contactez-moi</button>
                 <img class="photograph-img" src="${this.picture}" alt="" />`
     }
 }
