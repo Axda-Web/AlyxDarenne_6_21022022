@@ -8,8 +8,8 @@ export default class Image {
     getMediaCardDOM(){
         return `
         <article class="media-item">
-                <div class="media-item__media-container">
-                    <video class="media-item__video" width="300" height="280" >
+                <div class="media-item__media-container" data-id=${this.id}>
+                    <video class="media-item__video media-item_thumbnail" width="300" height="280" >
                         <source src=${this.mediaPicture} type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
@@ -19,6 +19,16 @@ export default class Image {
                     <p class="media-item__likes">${this.likes} <i class="fas fa-heart likes-btn"></i></p>
                 </div>
             </article>`
+    }
+
+    getLightbox(){
+        return `
+            <video class="lightbox__media">
+                <source src=${this.mediaPicture} type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <p class="lightbox__title">${this.title}</p>
+        `
     }
 
 }

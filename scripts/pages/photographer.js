@@ -1,4 +1,6 @@
 import apiManager from '../models/apiManager.js'
+import MediaFactory from '../factories/MediaFactory.js'
+import { displayContactFormModal, closeContactFormModal, formSubmit } from '../utils/contact.js'
 
 
 //Récupérer l'ID du photographe selectionné via l'URL
@@ -47,57 +49,26 @@ function handleLikesBtnClick(event) {
 }
 
 
-//Gestion interaction formulaire de contact
-const modal = document.getElementById("contact_modal");
-const modalPhotographerName = document.querySelector('.photographer-name')
-
-function displayContactFormModal(name) {
-	modal.style.display = "block";
-    modalPhotographerName.innerText = name;
-}
-
-function closeContactFormModal() {
-    modal.style.display = "none";
-}
-
-function formSubmit(event) {
-    const firstname = document.getElementById('firstname')
-    const lastname = document.getElementById('lastname')
-    const email = document.getElementById('email')
-    const message = document.getElementById('message')
-    const form = document.getElementById('form')
-
-    event.preventDefault()
-
-    if (form.checkValidity()){
-        console.log(`
-        Prénom: ${firstname.value},
-        Nom: ${lastname.value},
-        Email: ${email.value},
-        Message: ${message.value}
-    `)
-    } else {
-        console.log('Merci de fournir des données valides.')
-    }
-    
-
-}
-
-
 //Affichage menu-déroulant filtres
-const btnDropdownToggle = document.querySelector('.dropdown-toggle')
-const dropdownIcon = document.querySelector('.dropdown-toggle i')
-const dropdownItems = document.querySelector(".dropdown-items")
+const btnToggleFilters = document.querySelector(".btn-toggle")
+const filterList = document.querySelector(".filters");
+const iconBtnToggle = document.querySelector('.btn-toggle__icon');
+const popularityFilterElt = document.querySelector('.filter--popularity')
+const dateFilterElt = document.querySelector('.filter--date')
+const titleFilterElt = document.querySelector('.filter--title')
 
-
-function showFilters() {
-    dropdownItems.classList.toggle('show-filters')
-    if(dropdownItems.classList.contains('show-filters')){
-        btnDropdownToggle.style.borderRadius = "5px 5px 0 0"
-        dropdownIcon.className = "fas fa-angle-up"
+function showFiltersList() {
+  btnToggleFilters.classList.toggle('show-filters')
+    if(btnToggleFilters.classList.contains('show-filters')){
+      filterList.style.display = "block";
+      btnToggleFilters.style.padding = "0.5em 0 0.8em 0";
+      btnToggleFilters.style.borderBottom = "1px solid white";
+      iconBtnToggle.className = "fas fa-angle-up btn-toggle__icon"
     } else {
-        btnDropdownToggle.style.borderRadius = "5px"
-        dropdownIcon.className = "fas fa-angle-down"
+      filterList.style.display = "none";
+      btnToggleFilters.style.padding = ".4em 0";
+      btnToggleFilters.style.borderBottom = "none";
+      iconBtnToggle.className = "fas fa-angle-down btn-toggle__icon"
     }
 }
 
@@ -105,11 +76,19 @@ function showFilters() {
 //Fonctions permettants de filtrer les medias
 function filterMediaByPopularity(currentPhotographerMedia) {
 
+    btnToggleFilters.innerHTML = "Popularité <i class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
+
     currentPhotographerMedia.sort((a, b) => b.likes - a.likes)
     displayPhotogapherMedia(currentPhotographerMedia)
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
 }
 
 function filterMediaByDate(currentPhotographerMedia) {
+
+    btnToggleFilters.innerHTML = "Date <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
 
     currentPhotographerMedia.sort((a, b) => {
         let dateA = new Date(a.date)
@@ -118,9 +97,14 @@ function filterMediaByDate(currentPhotographerMedia) {
     })
 
     displayPhotogapherMedia(currentPhotographerMedia)
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
 }
 
 function filterMediaByTitle(currentPhotographerMedia) {
+
+    btnToggleFilters.innerHTML = "Titre <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
 
     currentPhotographerMedia.sort((a, b) => {
     let nameA = a.title.toLowerCase()
@@ -136,7 +120,10 @@ function filterMediaByTitle(currentPhotographerMedia) {
     })
 
     displayPhotogapherMedia(currentPhotographerMedia)
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
 }
+
 
 async function  init() {
 
@@ -166,20 +153,82 @@ async function  init() {
     formSubmitBtn.addEventListener('click', formSubmit)
 
 
-    //Gestion events menu déroulant filtres
-    btnDropdownToggle.addEventListener('click', showFilters)
-
+    
+    //Incrémentation like button
     const likesBtn = document.querySelectorAll('.likes-btn')
     likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
 
-    const popularityFilterBtn = document.getElementById('popularity-filter')
-    popularityFilterBtn.addEventListener('click', () => filterMediaByPopularity(currentPhotographerMedia))
 
-    const dateFilterBtn = document.getElementById('date-filter')
-    dateFilterBtn.addEventListener('click', () => filterMediaByDate(currentPhotographerMedia))
+    //Gestion events menu déroulant filtres
+    
+    btnToggleFilters.addEventListener('click', showFiltersList)
 
-    const titleFilterBtn = document.getElementById('title-filter')
-    titleFilterBtn.addEventListener('click', () => filterMediaByTitle(currentPhotographerMedia))
+    popularityFilterElt.addEventListener('click', () => filterMediaByPopularity(currentPhotographerMedia))
+
+    dateFilterElt.addEventListener('click', () => filterMediaByDate(currentPhotographerMedia))
+
+    titleFilterElt.addEventListener('click', () => filterMediaByTitle(currentPhotographerMedia))
+
+    
+    
+    //Gestion lightbox
+    const mediaItems = document.querySelectorAll('.media-item__media-container')
+    const lightbox = document.querySelector('.lightbox')
+    const mediaContainer = document.querySelector('.media-container')
+    let currentMediaIndex = 0
+    let currentMedia = {}
+    let mediaSrc
+    
+
+    //Apparition de la lightbox
+    function showLightbox(event) {
+
+        currentMediaIndex = currentPhotographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
+        currentMedia = currentPhotographerMedia[currentMediaIndex]
+        const media = new MediaFactory(currentMedia)
+        
+        lightbox.style.display = "block"
+        mediaContainer.innerHTML = media.getLightbox()
+    }
+    mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', showLightbox))
+
+
+    //Fermeture LightBox
+    const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
+    closeBtnLightbox.addEventListener('click', closeLightbox)
+
+    function closeLightbox() {
+        lightbox.style.display = "none"
+    }
+
+    
+    //Afficher le media suivant
+    const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
+    nextBtnLightbox.addEventListener('click', nextMedia)
+
+    function nextMedia() {
+
+        currentMediaIndex < currentPhotographerMedia.length - 1 ? currentMedia = currentPhotographerMedia[++currentMediaIndex] : currentMediaIndex = 0; currentMedia = currentPhotographerMedia[currentMediaIndex] 
+        const media = new MediaFactory(currentMedia)
+
+        mediaContainer.innerHTML = media.getLightbox()
+    }
+
+
+    //Afficher le media précédent
+    const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
+    prevBtnLightbox.addEventListener('click', prevMedia)
+
+    function prevMedia() {
+        
+        currentMediaIndex > 0 ? currentMedia = currentPhotographerMedia[--currentMediaIndex] : currentMediaIndex = currentPhotographerMedia.length - 1; currentMedia = currentMedia = currentPhotographerMedia[currentMediaIndex]
+        const media = new MediaFactory(currentMedia)
+        
+        mediaContainer.innerHTML = media.getLightbox()
+    }
+    
+
 }
 
 init()
+

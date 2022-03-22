@@ -12,7 +12,6 @@
     };
 
     async function init() {
-        // Récupère les datas des photographes
         await apiManager.init();
         const photographers = apiManager.getPhotographers();
         displayData(photographers);

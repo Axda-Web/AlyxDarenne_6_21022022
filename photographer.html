@@ -21,17 +21,14 @@
     </section>
     <section class="filter-section">
       <p class="dropdown-text">Trier par</p>
-      <div class="dropdown">
-        <button id="popularity-filter" class="dropdown-toggle">Popularité <i class="fas fa-angle-down"></i></button>
-        <div class="dropdown-items">
-          <div class="dropdown-item-container">
-            <button id="date-filter" class="dropdown-item">Date</button>
-          </div>
-          <div class="dropdown-item-container">
-            <button id="title-filter"
-              onclick="() => {currentPhotographerMedia.sort((a, b) => b.likes - a.likes); window.location.reload()}"
-              class="dropdown-item">Titre</button>
-          </div>
+      <div class="container">
+        <div class="custom-select">
+          <button class="btn-toggle">Popularité <i class="fas fa-angle-down btn-toggle__icon"></i></button>
+          <ul class="filters">
+            <li class="filter filter--popularity">Popularité</li>
+            <li class="filter filter--date">Date</li>
+            <li class="filter filter--title ">Titre</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -63,6 +60,17 @@
 
         <input id="submit-form" class="contact_button" type="button" value="Envoyer">
       </form>
+    </div>
+  </div>
+  <div class="lightbox">
+    <div class="lightbox__container">
+      <button class="lightbox__btn lightbox__btn--prev"><i class="fas fa-chevron-left"></i></button>
+      <div class="media-container">
+      </div>
+      <div class="icons-container">
+        <button class="lightbox__btn lightbox__btn--close"><i class="fas fa-xmark"></i></button>
+        <button class="lightbox__btn lightbox__btn--next"><i class="fas fa-chevron-right"></i></button>
+      </div>
     </div>
   </div>
   <script type="module" src="./scripts/pages/photographer.js"></script>

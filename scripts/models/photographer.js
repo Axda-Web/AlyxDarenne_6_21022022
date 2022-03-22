@@ -8,7 +8,9 @@ export default class Photographer {
     getUserCardDOM(){
         return `<article>
                     <a href="../../photographer.html?photographerid=${this.id}">
-                        <img src="${this.picture}">
+                        <div class="img-container">
+                            <img src="${this.picture}">
+                        </div>    
                         <h2>${this.name}</h2>
                     </a>
                     <p>
