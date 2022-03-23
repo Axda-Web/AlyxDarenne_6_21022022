@@ -1,29 +1,57 @@
+import { displayPhotogapherMedia } from '../utils/displayData.js'
+import { handleLikesBtnClick } from './likeBtn.js';
+import { showLightbox } from './lightbox.js';
+
+
+//Initialisation variables filter section
+export const btnToggleFilters = document.querySelector(".btn-toggle")
+export const filterList = document.querySelector(".filters");
+export const iconBtnToggle = document.querySelector('.btn-toggle__icon');
+export const popularityFilterElt = document.querySelector('.filter--popularity')
+export const dateFilterElt = document.querySelector('.filter--date')
+export const titleFilterElt = document.querySelector('.filter--title')
+
+
 //Affichage menu-déroulant filtres
-export const btnDropdownToggle = document.querySelector('.dropdown-toggle')
-export const dropdownIcon = document.querySelector('.dropdown-toggle i')
-export const dropdownItems = document.querySelector(".dropdown-items")
-
-
-function showFilters() {
-    dropdownItems.classList.toggle('show-filters')
-    if(dropdownItems.classList.contains('show-filters')){
-        btnDropdownToggle.style.borderRadius = "5px 5px 0 0"
-        dropdownIcon.className = "fas fa-angle-up"
+export function showFiltersList() {
+  btnToggleFilters.classList.toggle('show-filters')
+    if(btnToggleFilters.classList.contains('show-filters')){
+      filterList.style.display = "block";
+      btnToggleFilters.style.padding = "0.5em 0 0.8em 0";
+      btnToggleFilters.style.borderBottom = "1px solid white";
+      iconBtnToggle.className = "fas fa-angle-up btn-toggle__icon"
     } else {
-        btnDropdownToggle.style.borderRadius = "5px"
-        dropdownIcon.className = "fas fa-angle-down"
+      filterList.style.display = "none";
+      btnToggleFilters.style.padding = ".4em 0";
+      btnToggleFilters.style.borderBottom = "none";
+      iconBtnToggle.className = "fas fa-angle-down btn-toggle__icon"
     }
 }
 
 
 //Fonctions permettants de filtrer les medias
-function filterMediaByPopularity(currentPhotographerMedia) {
+
+export function filterMediaByPopularity(currentPhotographerMedia) {
+
+    btnToggleFilters.innerHTML = "Popularité <i class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
 
     currentPhotographerMedia.sort((a, b) => b.likes - a.likes)
+
     displayPhotogapherMedia(currentPhotographerMedia)
+
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
+
+    const mediaItems = document.querySelectorAll('.media-item__media-container')
+    mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, currentPhotographerMedia)))
 }
 
-function filterMediaByDate(currentPhotographerMedia) {
+
+export function filterMediaByDate(currentPhotographerMedia) {
+
+    btnToggleFilters.innerHTML = "Date <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
 
     currentPhotographerMedia.sort((a, b) => {
         let dateA = new Date(a.date)
@@ -32,9 +60,19 @@ function filterMediaByDate(currentPhotographerMedia) {
     })
 
     displayPhotogapherMedia(currentPhotographerMedia)
+
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
+
+    const mediaItems = document.querySelectorAll('.media-item__media-container')
+    mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, currentPhotographerMedia)))
 }
 
-function filterMediaByTitle(currentPhotographerMedia) {
+
+export function filterMediaByTitle(currentPhotographerMedia) {
+
+    btnToggleFilters.innerHTML = "Titre <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+    showFiltersList()
 
     currentPhotographerMedia.sort((a, b) => {
     let nameA = a.title.toLowerCase()
@@ -50,6 +88,10 @@ function filterMediaByTitle(currentPhotographerMedia) {
     })
 
     displayPhotogapherMedia(currentPhotographerMedia)
-}
 
-export { showFilters, filterMediaByPopularity, filterMediaByDate, filterMediaByTitle }
+    const likesBtn = document.querySelectorAll('.likes-btn')
+    likesBtn.forEach( btn => btn.addEventListener('click', handleLikesBtnClick))
+
+    const mediaItems = document.querySelectorAll('.media-item__media-container')
+    mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, currentPhotographerMedia)))
+}

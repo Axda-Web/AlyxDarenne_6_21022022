@@ -1,15 +1,23 @@
-//Gestion lightbox
-const mediaItems = document.querySelectorAll('.media-item__media-container')
-const lightbox = document.querySelector('.lightbox')
-const mediaContainer = document.querySelector('.media-container')
-let currentMediaIndex = 0
-let currentMedia = {}
-let mediaSrc
+import MediaFactory from '../factories/MediaFactory.js'
+
+//Initialisation des variables
+export const mediaItems = document.querySelectorAll('.media-item__media-container')
+export const lightbox = document.querySelector('.lightbox')
+export const mediaContainer = document.querySelector('.media-container')
+export let currentMediaIndex = 0
+export let currentMedia = {}
+export let arrMedia = []
+
+export const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
+export const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
+export const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
+
 
 
 //Apparition de la lightbox
-function showLightbox(event) {
+export function showLightbox(event, currentPhotographerMedia) {
 
+    arrMedia = [...currentPhotographerMedia]
     currentMediaIndex = currentPhotographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
     currentMedia = currentPhotographerMedia[currentMediaIndex]
     const media = new MediaFactory(currentMedia)
@@ -19,23 +27,16 @@ function showLightbox(event) {
 }
 
 
-
 //Fermeture LightBox
-const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
-
-
-function closeLightbox() {
+export function closeLightbox() {
     lightbox.style.display = "none"
 }
 
 
 //Afficher le media suivant
-const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
+export function nextMedia() {
 
-
-function nextMedia() {
-
-    currentMediaIndex < currentPhotographerMedia.length - 1 ? currentMedia = currentPhotographerMedia[++currentMediaIndex] : currentMediaIndex = 0; currentMedia = currentPhotographerMedia[currentMediaIndex] 
+    currentMediaIndex < arrMedia.length - 1 ? currentMedia = arrMedia[++currentMediaIndex] : currentMediaIndex = 0; currentMedia = arrMedia[currentMediaIndex] 
     const media = new MediaFactory(currentMedia)
 
     mediaContainer.innerHTML = media.getLightbox()
@@ -43,13 +44,11 @@ function nextMedia() {
 
 
 //Afficher le media précédent
-const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
-
-
-function prevMedia() {
+export function prevMedia() {
     
-    currentMediaIndex > 0 ? currentMedia = currentPhotographerMedia[--currentMediaIndex] : currentMediaIndex = currentPhotographerMedia.length - 1; currentMedia = currentMedia = currentPhotographerMedia[currentMediaIndex]
+    currentMediaIndex > 0 ? currentMedia = arrMedia[--currentMediaIndex] : currentMediaIndex = arrMedia.length - 1; currentMedia = currentMedia = arrMedia[currentMediaIndex]
     const media = new MediaFactory(currentMedia)
     
     mediaContainer.innerHTML = media.getLightbox()
 }
+

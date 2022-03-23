@@ -23,7 +23,7 @@ export default class Image {
 
     getLightbox(){
         return `
-            <video class="lightbox__media">
+            <video controls class="lightbox__media">
                 <source src=${this.mediaPicture} type="video/mp4">
                 Your browser does not support the video tag.
             </video>
