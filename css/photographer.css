@@ -1,7 +1,7 @@
 header {
     width: 100%;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: 2em auto 0;
 }
 
 
@@ -10,7 +10,7 @@ header {
 .photograph-header {
     width: 100%;
     max-width: 1200px;
-    margin: 30px auto 100px auto;
+    margin: 30px auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -29,6 +29,10 @@ header {
     font-size: 22px;
     color: #901C1C;
     margin: .5em 0 0 0;
+}
+
+.photograph-tagline {
+    color: #525252;
 }
 
 .photograph-img {
@@ -89,6 +93,10 @@ header {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
+#close-btn {
+    margin-top: -10px;
+}
+
 .modal header {
     width: 100%;
 }
@@ -107,6 +115,10 @@ header {
     font-size: 2.5rem;
 }
 
+.modal .text-container {
+    margin-bottom: 2em;
+}
+
 .modal .photographer-name {
     font-size: 2rem;
     font-weight: 700;
@@ -123,6 +135,7 @@ form {
 form label {
     color: #312E2E;
     font-size: 1.3rem;
+    margin-bottom: .2em;
 }
 
 form div {
@@ -138,16 +151,15 @@ form input {
     height: 50px;
     border: none;
     border-radius: 5px;
-    padding-left: .5em;
+    box-sizing: border-box;
 }
 
 input, textarea {
     margin-bottom: 1em;
-    padding-left: .5em;
 }
 
 input {
-    padding: 0;
+    padding-left: .5em;
     font-size: 1.2rem;
 }
 
@@ -162,6 +174,15 @@ textarea {
 
 #submit-form {
     padding-left: 0;
+}
+
+#submit-form:hover {
+    background-color: #901C1C;
+    color: white;
+}
+
+.validation:invalid {
+    border: 2px solid red;
 }
 /* CONTACT MODAL END */
 

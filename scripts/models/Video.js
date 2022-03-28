@@ -16,7 +16,7 @@ export default class Image {
                 </div>
                 <div class="media-item__text-container">
                     <p class="media-item__title">${this.title}</p>
-                    <p class="media-item__likes">${this.likes} <i class="fas fa-heart likes-btn"></i></p>
+                    <p class="media-item__likes">${this.likes} <i data-id=${this.id} class="fas fa-heart likes-btn"></i></p>
                 </div>
             </article>`
     }

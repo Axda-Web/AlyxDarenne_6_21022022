@@ -18,11 +18,11 @@ export function displayPhotogapherMedia(currentPhotographerMedia) {
 }
 
 //Affichage élément flottant bas de page(nb likes + TJM)
-export function  displayFixedBottomBlock(allLikes, price) {
+export function  displayFixedBottomBlock(price, totalLikes) {
     
     const orangeBlock = document.createElement('aside')
     orangeBlock.classList.add('orange-box')
-    orangeBlock.innerHTML = `<p class="likes-total">${allLikes} <i class="fas fa-heart"></i></p>
+    orangeBlock.innerHTML = `<p class="likes-total">${totalLikes} <i class="fas fa-heart"></i></p>
                             <p>${price}€ / jour</p>`
     document.body.appendChild(orangeBlock)
 }

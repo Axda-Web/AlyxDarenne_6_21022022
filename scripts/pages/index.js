@@ -13,7 +13,8 @@
 
     async function init() {
         await apiManager.init();
-        const photographers = apiManager.getPhotographers();
+        apiManager.setPhotographersInfo()
+        const photographers = apiManager.displayPhotographersInfo();
         displayData(photographers);
     };
     

@@ -9,7 +9,7 @@ export default class Photographer {
         return `<article>
                     <a href="../../photographer.html?photographerid=${this.id}">
                         <div class="img-container">
-                            <img src="${this.picture}">
+                            <img src=${this.picture} alt=${this.name}>
                         </div>    
                         <h2>${this.name}</h2>
                     </a>
@@ -28,6 +28,6 @@ export default class Photographer {
                     <p class="photograph-tagline">${this.tagline}</p>
                 </div>
                 <button class="contact_button" id="open-modal-btn">Contactez-moi</button>
-                <img class="photograph-img" src="${this.picture}" alt="" />`
+                <img class="photograph-img" src=${this.picture} alt=${this.name} />`
     }
 }

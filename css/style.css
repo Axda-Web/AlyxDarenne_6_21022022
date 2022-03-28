@@ -8,10 +8,7 @@ body {
 
 /* HEADER SECTION */
 
-header {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+header { 
     display: flex;
     flex-direction: row;
     justify-content: space-between;

@@ -17,6 +17,7 @@ export const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
 //Apparition de la lightbox
 export function showLightbox(event, currentPhotographerMedia) {
 
+
     arrMedia = [...currentPhotographerMedia]
     currentMediaIndex = currentPhotographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
     currentMedia = currentPhotographerMedia[currentMediaIndex]
@@ -52,3 +53,12 @@ export function prevMedia() {
     mediaContainer.innerHTML = media.getLightbox()
 }
 
+
+//Défilement des images avec les touches directionnelles du clavier
+export function arrowNav(event) {
+    if(event.key === "ArrowLeft"){
+        prevMedia()
+    } else if(event.key === "ArrowRight"){
+        nextMedia()
+    }
+}
