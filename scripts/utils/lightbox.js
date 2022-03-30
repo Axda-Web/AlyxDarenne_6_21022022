@@ -1,12 +1,15 @@
 import MediaFactory from '../factories/MediaFactory.js'
 
+
+/* ----- LIGHTBOX ----- */
+
 //Initialisation des variables
-export const mediaItems = document.querySelectorAll('.media-item__media-container')
-export const lightbox = document.querySelector('.lightbox')
-export const mediaContainer = document.querySelector('.media-container')
-export let currentMediaIndex = 0
-export let currentMedia = {}
-export let arrMedia = []
+const lightbox = document.getElementById('lightbox')
+const mainContainer = document.getElementById('main-container')
+const mediaContainer = document.querySelector('.media-container')
+let currentMediaIndex = 0
+let currentMedia = {}
+let arrMedia = []
 
 export const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
 export const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
@@ -15,21 +18,27 @@ export const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
 
 
 //Apparition de la lightbox
-export function showLightbox(event, currentPhotographerMedia) {
+export function showLightbox(event, photographerMedia) {
 
-
-    arrMedia = [...currentPhotographerMedia]
-    currentMediaIndex = currentPhotographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
-    currentMedia = currentPhotographerMedia[currentMediaIndex]
+    arrMedia = [...photographerMedia]
+    currentMediaIndex = photographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
+    currentMedia = photographerMedia[currentMediaIndex]
     const media = new MediaFactory(currentMedia)
+
+    //Accessibilité
+    lightbox.setAttribute('aria-hidden', 'false')
+    mainContainer.setAttribute('aria-hidden', 'true')
     
     lightbox.style.display = "block"
+    //closeBtnLightbox.focus()
     mediaContainer.innerHTML = media.getLightbox()
 }
 
 
 //Fermeture LightBox
 export function closeLightbox() {
+    lightbox.setAttribute('aria-hidden', 'true')
+    mainContainer.setAttribute('aria-hidden', 'false')
     lightbox.style.display = "none"
 }
 
@@ -54,11 +63,22 @@ export function prevMedia() {
 }
 
 
-//Défilement des images avec les touches directionnelles du clavier
-export function arrowNav(event) {
-    if(event.key === "ArrowLeft"){
-        prevMedia()
-    } else if(event.key === "ArrowRight"){
-        nextMedia()
+//Gestion navigation lightbox via le clavier
+export function lightboxKeyboardNav(event) {
+    if(lightbox.getAttribute('aria-hidden') === 'false'){
+        switch(event.key) {
+            case 'ArrowLeft':
+                prevMedia()
+                break
+
+            case 'ArrowRight':
+                nextMedia()
+                break
+
+            case 'Escape':
+                closeLightbox()
+        }
     }
 }
+
+/* ----- LIGHTBOX END ----- */

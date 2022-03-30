@@ -1,3 +1,5 @@
+/* ----- DYNAMIC DOM SECTION RENDERING ----- */
+
 //Affichage photographe header   
 export function displayPhotographerHeader(currentPhotographerInfo) {
     const photographHeaderElt = document.querySelector('.photograph-header')
@@ -26,3 +28,5 @@ export function  displayFixedBottomBlock(price, totalLikes) {
                             <p>${price}€ / jour</p>`
     document.body.appendChild(orangeBlock)
 }
+
+/* ----- DYNAMIC DOM SECTION RENDERING END ----- */

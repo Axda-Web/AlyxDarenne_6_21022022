@@ -1,6 +1,6 @@
 import apiManager from '../models/apiManager.js'
-import MediaFactory from '../factories/MediaFactory.js'
-import { displayContactFormModal, closeContactFormModal, formSubmit } from '../utils/contact.js'
+import { showLightbox, closeLightbox, prevMedia, nextMedia, lightboxKeyboardNav, closeBtnLightbox, nextBtnLightbox, prevBtnLightbox } from '../utils/lightbox.js'
+import { displayContactFormModal, closeContactFormModal, formSubmit, contactFormKeyboardNav } from '../utils/contact.js'
 import { displayPhotogapherMedia, displayPhotographerHeader, displayFixedBottomBlock } from '../utils/displayData.js'
 
 
@@ -11,7 +11,7 @@ const photographerId = urlParams.get('photographerid')
 
 
 
-//Incrémentation via le like btn
+//Incrémentation via le like button
 function handleLikeBtnClick(event){
     const clickedMedia = apiManager.getClickedMedia(parseInt(event.target.dataset.id))
     const clickedMediaId = parseInt(event.target.dataset.id)
@@ -28,7 +28,6 @@ function handleLikeBtnClick(event){
 //Initialisation variables
 const btnToggleFilters = document.querySelector(".btn-toggle")
 const filterList = document.querySelector(".filters");
-const iconBtnToggle = document.querySelector('.btn-toggle__icon');
 const popularityFilterElt = document.querySelector('.filter--popularity')
 const dateFilterElt = document.querySelector('.filter--date')
 const titleFilterElt = document.querySelector('.filter--title')
@@ -37,163 +36,141 @@ popularityFilterElt.style.display = 'none'
 
 
 //Fermeture menu-déroulant filtres
-export function closeFilterList() {
-    filterList.style.display = "none";
-    btnToggleFilters.style.padding = ".4em 0";
-    btnToggleFilters.style.borderBottom = "none";
-    iconBtnToggle.className = "fas fa-angle-down btn-toggle__icon"
-    btnToggleFilters.classList.toggle('show-filters')
-  }
-  
-  //Affichage menu-déroulant filtres
-  export function showFiltersList() {
-    btnToggleFilters.classList.toggle('show-filters')
-      if(btnToggleFilters.classList.contains('show-filters')){
-        filterList.style.display = "block";
-        btnToggleFilters.style.padding = "0.5em 0 0.8em 0";
-        btnToggleFilters.style.borderBottom = "1px solid white";
-        iconBtnToggle.className = "fas fa-angle-up btn-toggle__icon"
-      } else {
-        closeFilterList()
-      }
-  }
-  
-  
-  //Fonctions permettants de filtrer les medias
-  
-  export function filterMediaByPopularity() {
-  
-      btnToggleFilters.innerHTML = "Popularité <i class='fas fa-angle-down btn-toggle__icon'></i>"
-      dateFilterElt.style.display = 'block'
-      titleFilterElt.style.display = 'block'
-      popularityFilterElt.style.display = 'none'
-  
-      closeFilterList()
-  
-      displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByPopularity())
-  
-      const likesBtn = document.querySelectorAll('.likes-btn')
-      likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
-  
-      const mediaItems = document.querySelectorAll('.media-item__media-container')
-      mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
-  }
-  
-  
-  export function filterMediaByDate() {
-  
-      btnToggleFilters.innerHTML = "Date <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
-      popularityFilterElt.style.display = 'block'
-      titleFilterElt.style.display = 'block'
-      dateFilterElt.style.display = 'none'
-  
-      closeFilterList()
-  
-      displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByDate())
-  
-      const likesBtn = document.querySelectorAll('.likes-btn')
-      likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
-  
-      const mediaItems = document.querySelectorAll('.media-item__media-container')
-      mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
-  }
-  
-  
-  export function filterMediaByTitle() {
-  
-      btnToggleFilters.innerHTML = "Titre <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
-      dateFilterElt.style.display = 'block'
-      popularityFilterElt.style.display = 'block'
-      titleFilterElt.style.display = 'none'
-  
-      closeFilterList()
-  
-      displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByTitle())
+function closeFilterList() {
 
+  const iconBtnToggle = document.querySelector('.btn-toggle__icon');
+
+  //Accessibilité
+  btnToggleFilters.setAttribute('aria-expanded', 'false')
+
+  filterList.style.display = "none";
+  btnToggleFilters.style.padding = ".4em 0";
+  btnToggleFilters.style.borderBottom = "none";
+  iconBtnToggle.classList.remove('fa-angle-up')
+  iconBtnToggle.classList.add('fa-angle-down')
+}
   
-      const likesBtn = document.querySelectorAll('.likes-btn')
-      likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
-  
-      const mediaItems = document.querySelectorAll('.media-item__media-container')
-      mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
+//Affichage menu-déroulant filtres
+function showFiltersList() {
+
+  const iconBtnToggle = document.querySelector('.btn-toggle__icon');
+
+  //Accessibilité
+  btnToggleFilters.setAttribute('aria-expanded', 'true')
+
+  btnToggleFilters.classList.toggle('show-filters')
+
+  if(btnToggleFilters.classList.contains('show-filters')){
+      filterList.style.display = "block";
+      btnToggleFilters.style.padding = "0.5em 0 0.8em 0";
+      btnToggleFilters.style.borderBottom = "1px solid white";
+      iconBtnToggle.classList.remove('fa-angle-down')
+      iconBtnToggle.classList.add('fa-angle-up')
+  } else {
+        closeFilterList()
   }
+}
+  
+  
+//Filtrer les medias par Popularité
+function filterMediaByPopularity() {
+  
+  //Actualisation des éléments du menu filtres
+  btnToggleFilters.innerHTML = "Popularité <i class='fas fa-angle-down btn-toggle__icon'></i>"
+  dateFilterElt.style.display = 'block'
+  titleFilterElt.style.display = 'block'
+  popularityFilterElt.style.display = 'none'
+
+  //Accessibilité
+  popularityFilterElt.setAttribute('aria-selected', 'true')
+  dateFilterElt.setAttribute('aria-selected', 'false')
+  titleFilterElt.setAttribute('aria-selected', 'false')
+  
+  //Fermeture du menu filtres
+  closeFilterList()
+  btnToggleFilters.classList.toggle('show-filters')
+  
+  displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByPopularity())
+  
+  //Reset de l'event like button
+  const likesBtn = document.querySelectorAll('.likes-btn')
+  likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
+  
+  //Reset de l'event lightbox
+  const mediaItems = document.querySelectorAll('.media-item__media-container')
+  mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
+}
+  
+  
+//Filtrer les medias par Date
+function filterMediaByDate() {
+  
+  //Actualisation des éléments du menu filtres
+  btnToggleFilters.innerHTML = "Date <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+  popularityFilterElt.style.display = 'block'
+  titleFilterElt.style.display = 'block'
+  dateFilterElt.style.display = 'none'
+
+  //Accessibilité
+  popularityFilterElt.setAttribute('aria-selected', 'false')
+  dateFilterElt.setAttribute('aria-selected', 'true')
+  titleFilterElt.setAttribute('aria-selected', 'false')
+  
+  //Fermeture du menu filtres
+  closeFilterList()
+  btnToggleFilters.classList.toggle('show-filters')
+  
+  //Re-render des medias filtrés par Date
+  displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByDate())
+  
+  //Reset de l'event like button
+  const likesBtn = document.querySelectorAll('.likes-btn')
+  likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
+  
+  //Reset de l'event lightbox
+  const mediaItems = document.querySelectorAll('.media-item__media-container')
+  mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
+}
+  
+  
+//Filtrer les medias par Titre
+function filterMediaByTitle() {
+  
+  //Actualisation des éléments du menu filtres
+  btnToggleFilters.innerHTML = "Titre <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+  dateFilterElt.style.display = 'block'
+  popularityFilterElt.style.display = 'block'
+  titleFilterElt.style.display = 'none'
+
+  //Accessibilité
+  popularityFilterElt.setAttribute('aria-selected', 'false')
+  dateFilterElt.setAttribute('aria-selected', 'false')
+  titleFilterElt.setAttribute('aria-selected', 'true')
+  
+  //Fermeture du menu filtres
+  closeFilterList()
+  btnToggleFilters.classList.toggle('show-filters')
+  
+  //Re-render des medias filtrés par Titre
+  displayPhotogapherMedia(apiManager.displayCurrentPhotographerMediaFilteredByTitle())
+
+  //Reset de l'event like button
+  const likesBtn = document.querySelectorAll('.likes-btn')
+  likesBtn.forEach( btn => btn.addEventListener('click', handleLikeBtnClick))
+  
+  //Reset de l'event lightbox
+  const mediaItems = document.querySelectorAll('.media-item__media-container')
+  mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', event => showLightbox(event, apiManager.currentPhotographerMedia)))
+}
 
 /* ----- FILTRES END ----- */
 
 
 
 
-/* ----- LIGHTBOX ----- */
-
-//Initialisation des variables
-const lightbox = document.querySelector('.lightbox')
-const mediaContainer = document.querySelector('.media-container')
-let currentMediaIndex = 0
-let currentMedia = {}
-let arrMedia = []
-
-const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
-const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
-const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
-
-
-
-//Apparition de la lightbox
-function showLightbox(event, photographerMedia) {
-
-    arrMedia = [...photographerMedia]
-    currentMediaIndex = photographerMedia.findIndex(media => media.id == event.currentTarget.dataset.id)
-    currentMedia = photographerMedia[currentMediaIndex]
-    const media = new MediaFactory(currentMedia)
-    
-    lightbox.style.display = "block"
-    mediaContainer.innerHTML = media.getLightbox()
-}
-
-
-//Fermeture LightBox
-export function closeLightbox() {
-    lightbox.style.display = "none"
-}
-
-
-//Afficher le media suivant
-function nextMedia() {
-
-    currentMediaIndex < arrMedia.length - 1 ? currentMedia = arrMedia[++currentMediaIndex] : currentMediaIndex = 0; currentMedia = arrMedia[currentMediaIndex] 
-    const media = new MediaFactory(currentMedia)
-
-    mediaContainer.innerHTML = media.getLightbox()
-}
-
-
-//Afficher le media précédent
-function prevMedia() {
-    
-    currentMediaIndex > 0 ? currentMedia = arrMedia[--currentMediaIndex] : currentMediaIndex = arrMedia.length - 1; currentMedia = currentMedia = arrMedia[currentMediaIndex]
-    const media = new MediaFactory(currentMedia)
-    
-    mediaContainer.innerHTML = media.getLightbox()
-}
-
-
-//Défilement des images avec les touches directionnelles du clavier
-function arrowNav(event) {
-    if(event.key === "ArrowLeft"){
-        prevMedia()
-    } else if(event.key === "ArrowRight"){
-        nextMedia()
-    }
-}
-
-/* ----- LIGHTBOX END ----- */
-
-
-
-
 async function  init() {
 
-    //Affichage data photographer + media
+    //Récupération des data du photographe
     await apiManager.init()
     apiManager.setPhotographersInfo()
     apiManager.setCurrentPhotographerInfo(photographerId)
@@ -219,7 +196,7 @@ async function  init() {
     displayFixedBottomBlock(price, totalLikes)
 
     
-    //Gestion du modal contact form
+    //Gestion events modal contact form
     const contactBtn = document.getElementById("open-modal-btn")
     contactBtn.addEventListener('click', () => displayContactFormModal(name))
 
@@ -228,6 +205,8 @@ async function  init() {
 
     const formSubmitBtn = document.getElementById('submit-form')
     formSubmitBtn.addEventListener('click', formSubmit)
+
+    document.body.addEventListener('keydown', contactFormKeyboardNav)
 
 
     //Incrémentation like button
@@ -242,20 +221,17 @@ async function  init() {
     titleFilterElt.addEventListener('click', filterMediaByTitle)
     
     
-    //Apparition de la lightbox
+    //Gestion events lightbox
     const mediaItems = document.querySelectorAll('.media-item__media-container')
     mediaItems.forEach(mediaItem => mediaItem.addEventListener('click', (event) => showLightbox(event, photographerMedia)))
 
-    //Fermeture LightBox
     closeBtnLightbox.addEventListener('click', closeLightbox)
 
-    //Afficher le media suivant
     nextBtnLightbox.addEventListener('click', nextMedia)
 
-    //Afficher le media précédent
     prevBtnLightbox.addEventListener('click', prevMedia)
 
-    document.body.addEventListener('keydown', arrowNav)
+    document.body.addEventListener('keydown', lightboxKeyboardNav)
 }
 
 init()

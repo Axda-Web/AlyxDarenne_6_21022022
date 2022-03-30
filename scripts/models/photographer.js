@@ -1,3 +1,4 @@
+//Affichage info photographe
 export default class Photographer {
 
     constructor(data){
@@ -5,13 +6,14 @@ export default class Photographer {
         this.picture = `assets/photographers/${this.portrait}`;
     }
 
+    //Affichage dans la grille photographes de la page index.html
     getUserCardDOM(){
         return `<article>
-                    <a href="../../photographer.html?photographerid=${this.id}">
+                    <a aria-labelledby="photograph-name" href="../../photographer.html?photographerid=${this.id}">
                         <div class="img-container">
-                            <img src=${this.picture} alt=${this.name}>
+                            <img src=${this.picture} alt="${this.name}">
                         </div>    
-                        <h2>${this.name}</h2>
+                        <h2 id="photograph-name">${this.name}</h2>
                     </a>
                     <p>
                         <span class="text_location">${this.city}, ${this.country}</span></br>
@@ -21,13 +23,14 @@ export default class Photographer {
                 </article>`;
     }
 
+    //Affichage dans le header de la page photographer.html
     getUserHeader(){
         return `<div class="photograph-description">
-                    <h2 class="photograph-name">${this.name}</h2>
+                    <h1 class="photograph-name">${this.name}</h1>
                     <p class="photograph-location">${this.city}, ${this.country}</p>
                     <p class="photograph-tagline">${this.tagline}</p>
                 </div>
-                <button class="contact_button" id="open-modal-btn">Contactez-moi</button>
-                <img class="photograph-img" src=${this.picture} alt=${this.name} />`
+                <button aria-label="Contact Me" class="contact_button" id="open-modal-btn">Contactez-moi</button>
+                <img class="photograph-img" src=${this.picture} alt="${this.name}"  />`
     }
 }

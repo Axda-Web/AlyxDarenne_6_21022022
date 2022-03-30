@@ -1,23 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
     <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- normalize.css -->
+    <link rel="stylesheet" href="./css/normalize.css" type="text/css">
+
+    <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/ca497c4259.js" crossorigin="anonymous"></script>
+
+    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- stylesheet -->
+    <link href="./css/style.css" rel="stylesheet" type="text/css" />
+
     <title>Fisheye</title>
   </head>
   <body>
     <header>
-        <a href="./index.html">
-          <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" />
+        <a aria-label="Fisheye photographers" aria-current="page" href="./index.html">
+          <img src="assets/images/logo.png" class="logo" alt="Fisheye logo - Home page" />
         </a>
         <h1>Nos photographes</h1>
     </header>
     <main id="main">
-        <div class="photographer_section"></div>
+        <section class="photographer_section"></section>
     </main>
+    <!-- scripts -->
     <script type="module" src="scripts/pages/index.js"></script>
   </body>
 </html>

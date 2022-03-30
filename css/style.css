@@ -37,7 +37,7 @@ h1 {
     margin: 100px auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
+    gap: 60px 40px;
 }
 
 .photographer_section article {
@@ -51,6 +51,12 @@ h1 {
 .photographer_section a {
     display: block;
     text-decoration: none;
+    outline-offset: 0;
+}
+
+.photographer_section a:focus {
+    outline: auto;
+    outline-color: #2176ff;
 }
 
 .photographer_section article h2 {

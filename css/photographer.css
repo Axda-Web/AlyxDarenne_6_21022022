@@ -1,9 +1,13 @@
+* {
+    outline-offset: 10px;
+}
+
+
 header {
     width: 100%;
     max-width: 1400px;
     margin: 2em auto 0;
 }
-
 
 /* PHOTOGRAPHER HEADER */
 
@@ -59,6 +63,7 @@ header {
     height: 100%;
     background-color: white;
     z-index: 10;
+    overflow-y: scroll;
 }
 
 .contact_button {
@@ -74,7 +79,11 @@ header {
     order: 2;
 }
 
-.contact_button:hover, .contact_button:focus {
+#open-modal-btn {
+    margin-left: -150px;
+}
+
+.contact_button:hover {
     background-color: #D3573C;
     color: #312E2E;
 }
@@ -101,13 +110,15 @@ header {
     width: 100%;
 }
 
-.modal header img {
+.modal header button {
     cursor: pointer;
-    width: 30px;
+    border: none;
+    background-color: transparent;
     align-self: flex-start;
 }
 
-.modal h2 {
+.modal h1 {
+    color: black;
     font-weight: normal;
     margin: 0;
     margin-top: .3em;
@@ -120,7 +131,7 @@ header {
 }
 
 .modal .photographer-name {
-    font-size: 2rem;
+    display: block;
     font-weight: 700;
     margin-top: 0;
     margin-bottom: 1em;
@@ -193,7 +204,7 @@ textarea {
 .media-grid {
     width: 100%;
     max-width: 1200px;
-    margin: 3em auto;
+    margin: 4em auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
@@ -205,12 +216,15 @@ textarea {
 }
 
 .media-item__media-container {
+    display: block;
+    padding: 0;
     width: 300px;
     height: 280px;
     background-color: rgba(0,0,0,0.2);
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     border-radius: 5px;
     cursor: pointer;
+    border: none;
 }
 
 .media-item__img {
@@ -236,9 +250,11 @@ textarea {
 .likes-btn {
     cursor: pointer;
 }
+/* MEDIA GRID END*/
 
 
-/* ORANGE BOX */
+
+/* ASIDE BOX */
 
 .orange-box {
     width: 250px;
@@ -253,7 +269,7 @@ textarea {
     background-color: #D3573C;
     color: black;
 }
-/* ORANGE BOX END */
+/* ASIDE BOX END */
 
 
 
@@ -327,7 +343,7 @@ textarea {
 
 /* LIGHTBOX */
 
-.lightbox {
+#lightbox {
     display: none;
     position: fixed;
     top: 0;
