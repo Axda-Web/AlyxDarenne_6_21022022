@@ -20,7 +20,7 @@
 </head>
 
 <body>
-  <div id="main-container" aria-hidden="false">
+  <div tabindex="-1" id="main-container" aria-hidden="false">
     <header>
       <a href="./index.html">
         <img src="assets/images/logo.png" class="logo" alt="Fisheye logo - Photographer page" />
@@ -33,11 +33,17 @@
         <label id="filter-label" class="dropdown-text">Trier par</label>
         <div class="container">
           <div class="custom-select">
-            <button aria-haspopup="listbox" aria-expanded="false" class="btn-toggle">Popularité <i class="fas fa-angle-down btn-toggle__icon"></i></button>
-            <ul role="listbox" class="filters">
-              <li role="option" aria-labelledby="filter-label" aria-selected="true" class="filter filter--popularity">Popularité</li>
-              <li role="option" aria-labelledby="filter-label" aria-selected="false" class="filter filter--date">Date</li>
-              <li role="option" aria-labelledby="filter-label" aria-selected="false" class="filter filter--title ">Titre</li>
+            <button aria-labelledby="filter-label btn-toggle" aria-haspopup="listbox" aria-expanded="false"  aria-owns="filter-list" id="btn-toggle" class="btn-toggle">Popularité <span class="fas fa-angle-down btn-toggle__icon"></span></button>
+            <ul tabindex="-1" aria-activedescendant="filter--popularity" aria-labelledby="filter-label" id="filter-list" role="listbox" class="filters">
+              <li id="filter--popularity" role="option" aria-selected="true" class="filter">
+                <button>Popularité</button>
+              </li>
+              <li id="filter--date" role="option" aria-selected="false" class="filter">
+                <button>Date</button>
+              </li>
+              <li id="filter--title" role="option" aria-selected="false" class="filter">
+                <button>Titre</button>
+              </li>
             </ul>
           </div>
         </div>
@@ -46,7 +52,7 @@
       </section>
     </main>
   </div>
-  <section aria-hidden="true" role="dialog" aria-labbeledby="modal-title" id="contact_modal">
+  <section tabindex="-1" aria-hidden="true" role="dialog" aria-labbeledby="modal-title" id="contact_modal">
     <div class="modal">
       <header class="modal__header">
         <div class="text-container">
@@ -59,30 +65,30 @@
       <form id="form" class="modal__form" action="#">
 
         <label for="firstname">Prénom</label>
-        <input type="text" name="firstname" id="firstname" minlength="2" maxlength="30" aria-labelledby="firstname" required aria-required="true">
+        <input type="text" name="firstname" id="firstname" minlength="2" maxlength="30" required aria-required="true">
 
         <label for="lastname">Nom</label>
-        <input type="text" name="lastname" id="lastname" minlength="2" maxlength="30" aria-labelledby="lastname" required aria-required="true">
+        <input type="text" name="lastname" id="lastname" minlength="2" maxlength="30" required aria-required="true">
 
         <label for="email">Email</label>
-        <input type="email" name="email" id="email" pattern="^\w+([\.-]?\w+)*@\w+\.\w+$" aria-labelledby="email" required aria-required="true">
+        <input type="email" name="email" id="email" pattern="^\w+([\.-]?\w+)*@\w+\.\w+$" required aria-required="true">
 
         <label for="message">Votre message</label>
-        <textarea class="test" name="message" id="message" cols="30" rows="10" minlength="10" maxlength="100" aria-labelledby="message" required
+        <textarea class="test" name="message" id="message" cols="30" rows="10" minlength="10" maxlength="100" required
           aria-required="true"></textarea>
 
         <input id="submit-form" class="contact_button" type="submit" value="Envoyer" aria-label="Send">
       </form>
     </div>
   </section>
-  <section aria-hidden="true" role="dialog" aria-describedby="lightbox-title" id="lightbox" class="lightbox">
+  <section tabindex="-1" aria-hidden="true" role="dialog" aria-labelledby="lightbox-title" id="lightbox" class="lightbox">
     <div aria-label="Image closeup view" class="lightbox__container">
-      <button class="lightbox__btn lightbox__btn--prev" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+      <button class="lightbox__btn lightbox__btn--prev" aria-label="Previous image"><span class="fas fa-chevron-left"></span></button>
       <div class="media-container">
       </div>
       <div class="icons-container">
-        <button class="lightbox__btn lightbox__btn--close" aria-label="Close dialog  "><i class="fas fa-xmark"></i></button>
-        <button class="lightbox__btn lightbox__btn--next" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+        <button class="lightbox__btn lightbox__btn--next" aria-label="Next image"><span class="fas fa-chevron-right"></span></button>
+        <button class="lightbox__btn lightbox__btn--close" aria-label="Close dialog"><span class="fas fa-xmark"></span></button>
       </div>
     </div>
   </section>

@@ -5,23 +5,31 @@
 const mainContainer = document.getElementById('main-container')
 const modal = document.getElementById("contact_modal");
 const modalPhotographerName = document.querySelector('.photographer-name')
-const closeBtn = document.getElementById("close-btn")
 
-const firstname = document.querySelector('input#firstname')
-const lastname = document.querySelector('input#lastname')
-const email = document.querySelector('input#email')
-const message = document.querySelector('textarea#message')
+const firstname = document.getElementById('firstname')
+const lastname = document.getElementById('lastname')
+const email = document.getElementById('email')
+const message = document.getElementById('message')
 const form = document.getElementById('form')
 const inputs = document.querySelectorAll('input:not([type="submit"])')
+
+const modalFormFocusableElements = '#close-btn, #firstname, #lastname, #email, #message, #submit-form'
+const modalFormFocusableContent = modal.querySelectorAll(modalFormFocusableElements)
+const modalFormFirstFocusableElement = modalFormFocusableContent[0]
+const modalFormLastFocusableElement = modalFormFocusableContent[modalFormFocusableContent.length - 1]
 
 
 //Apparition du formulaire
 function displayContactFormModal(name) {
 	modal.style.display = "block";
+    modal.focus()
     modal.setAttribute('aria-hidden', 'false')
+    document.body.style.overflowY = 'hidden'
+
+    //Accessibilité
     mainContainer.setAttribute('aria-hidden', 'true')
+
     modalPhotographerName.innerText = name;
-    //closeBtn.focus()
 }
 
 
@@ -33,9 +41,11 @@ function closeContactFormModal() {
     mainContainer.setAttribute('aria-hidden', 'false')
 
     modal.style.display = "none";
+    document.body.style.overflowY = 'scroll'
     inputs.forEach(input => input.classList.remove('validation'))
     message.classList.remove('validation')
     form.reset()
+    document.body.focus()
 
 }
 
@@ -58,9 +68,11 @@ function formSubmit(event) {
         mainContainer.setAttribute('aria-hidden', 'false')
 
         modal.style.display = "none";
+        document.body.style.overflowY = 'scroll'
         inputs.forEach(input => input.classList.remove('validation'))
         message.classList.remove('validation')
         form.reset()
+        document.body.focus()
     } else {
         inputs.forEach(input => input.classList.add('validation'))
         message.classList.add('validation')
@@ -70,12 +82,34 @@ function formSubmit(event) {
 
 //Gestion navigation formulaire via le clavier
 function contactFormKeyboardNav(event) {
+    
     if(modal.getAttribute('aria-hidden') === 'false'){
-        switch(event.key) {
-            case 'Escape':
-                closeContactFormModal()
-        }   
-    }
+
+        //Touche Echap
+        if(event.key === 'Escape'){
+            closeContactFormModal()
+            return
+        }
+
+        //Touches Tab + ShiftTab
+        let isTabPressed = event.key === 'Tab' || event.keyCode === 9;
+
+        if (!isTabPressed) {
+            return;
+        }
+
+        if (event.shiftKey) {
+            if (document.activeElement === modalFormFirstFocusableElement) {
+                modalFormLastFocusableElement.focus();
+                event.preventDefault();
+            }
+        } else {
+            if (document.activeElement === modalFormLastFocusableElement) {
+                modalFormFirstFocusableElement.focus();
+                event.preventDefault();
+            }
+        } 
+    } 
 }
 
 export { displayContactFormModal, closeContactFormModal, formSubmit, contactFormKeyboardNav }

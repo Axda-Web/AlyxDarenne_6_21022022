@@ -15,6 +15,11 @@ export const closeBtnLightbox = document.querySelector('.lightbox__btn--close')
 export const nextBtnLightbox = document.querySelector('.lightbox__btn--next')
 export const prevBtnLightbox = document.querySelector('.lightbox__btn--prev')
 
+const lightboxFocusableElements = '.lightbox__btn--prev, .lightbox__btn--next, .lightbox__btn--close'
+const lightboxFocusableContent = lightbox.querySelectorAll(lightboxFocusableElements)
+const lightboxFirstFocusableElement = lightboxFocusableContent[0]
+const lightboxLastFocusableElement = lightboxFocusableContent[lightboxFocusableContent.length - 1]
+
 
 
 //Apparition de la lightbox
@@ -25,12 +30,14 @@ export function showLightbox(event, photographerMedia) {
     currentMedia = photographerMedia[currentMediaIndex]
     const media = new MediaFactory(currentMedia)
 
+    lightbox.style.display = "block"
+    document.body.style.overflowY = 'hidden'
+    lightbox.focus()
+
     //Accessibilité
     lightbox.setAttribute('aria-hidden', 'false')
     mainContainer.setAttribute('aria-hidden', 'true')
-    
-    lightbox.style.display = "block"
-    //closeBtnLightbox.focus()
+
     mediaContainer.innerHTML = media.getLightbox()
 }
 
@@ -40,6 +47,8 @@ export function closeLightbox() {
     lightbox.setAttribute('aria-hidden', 'true')
     mainContainer.setAttribute('aria-hidden', 'false')
     lightbox.style.display = "none"
+    document.body.style.overflowY = 'scroll'
+    document.body.focus()
 }
 
 
@@ -65,7 +74,10 @@ export function prevMedia() {
 
 //Gestion navigation lightbox via le clavier
 export function lightboxKeyboardNav(event) {
+
     if(lightbox.getAttribute('aria-hidden') === 'false'){
+
+        //Touches Flèche gauche + Flèche droite + Echap
         switch(event.key) {
             case 'ArrowLeft':
                 prevMedia()
@@ -77,6 +89,26 @@ export function lightboxKeyboardNav(event) {
 
             case 'Escape':
                 closeLightbox()
+                break
+        }
+
+        //Touches Tab + ShiftTab
+        let isTabPressed = event.key === 'Tab' || event.keyCode === 9;
+
+        if (!isTabPressed) {
+            return;
+        }
+
+        if (event.shiftKey) {
+            if (document.activeElement === lightboxFirstFocusableElement) {
+                lightboxLastFocusableElement.focus();
+                event.preventDefault();
+            }
+        } else {
+            if (document.activeElement === lightboxLastFocusableElement) {
+                lightboxFirstFocusableElement.focus();
+                event.preventDefault();
+            }
         }
     }
 }

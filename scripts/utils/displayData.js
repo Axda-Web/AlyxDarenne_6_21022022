@@ -24,7 +24,7 @@ export function  displayFixedBottomBlock(price, totalLikes) {
     
     const orangeBlock = document.createElement('aside')
     orangeBlock.classList.add('orange-box')
-    orangeBlock.innerHTML = `<p class="likes-total">${totalLikes} <i class="fas fa-heart"></i></p>
+    orangeBlock.innerHTML = `<p class="likes-total">${totalLikes} <span class="fas fa-heart"></span></p>
                             <p>${price}€ / jour</p>`
     document.body.appendChild(orangeBlock)
 }

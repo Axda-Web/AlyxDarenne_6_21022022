@@ -3,6 +3,8 @@ import { showLightbox, closeLightbox, prevMedia, nextMedia, lightboxKeyboardNav,
 import { displayContactFormModal, closeContactFormModal, formSubmit, contactFormKeyboardNav } from '../utils/contact.js'
 import { displayPhotogapherMedia, displayPhotographerHeader, displayFixedBottomBlock } from '../utils/displayData.js'
 
+//Nav avec clavier
+document.body.focus()   
 
 //Récupérer l'ID du photographe selectionné via l'URL
 const queryString = window.location.search
@@ -28,9 +30,9 @@ function handleLikeBtnClick(event){
 //Initialisation variables
 const btnToggleFilters = document.querySelector(".btn-toggle")
 const filterList = document.querySelector(".filters");
-const popularityFilterElt = document.querySelector('.filter--popularity')
-const dateFilterElt = document.querySelector('.filter--date')
-const titleFilterElt = document.querySelector('.filter--title')
+const popularityFilterElt = document.getElementById('filter--popularity')
+const dateFilterElt = document.getElementById('filter--date')
+const titleFilterElt = document.getElementById('filter--title')
 
 popularityFilterElt.style.display = 'none'
 
@@ -76,7 +78,7 @@ function showFiltersList() {
 function filterMediaByPopularity() {
   
   //Actualisation des éléments du menu filtres
-  btnToggleFilters.innerHTML = "Popularité <i class='fas fa-angle-down btn-toggle__icon'></i>"
+  btnToggleFilters.innerHTML = "Popularité <span class='fas fa-angle-down btn-toggle__icon'></span>"
   dateFilterElt.style.display = 'block'
   titleFilterElt.style.display = 'block'
   popularityFilterElt.style.display = 'none'
@@ -85,6 +87,7 @@ function filterMediaByPopularity() {
   popularityFilterElt.setAttribute('aria-selected', 'true')
   dateFilterElt.setAttribute('aria-selected', 'false')
   titleFilterElt.setAttribute('aria-selected', 'false')
+  filterList.setAttribute('aria-activedescendant', 'filter--popularity')
   
   //Fermeture du menu filtres
   closeFilterList()
@@ -106,7 +109,7 @@ function filterMediaByPopularity() {
 function filterMediaByDate() {
   
   //Actualisation des éléments du menu filtres
-  btnToggleFilters.innerHTML = "Date <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+  btnToggleFilters.innerHTML = "Date <span style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></span>"
   popularityFilterElt.style.display = 'block'
   titleFilterElt.style.display = 'block'
   dateFilterElt.style.display = 'none'
@@ -115,6 +118,7 @@ function filterMediaByDate() {
   popularityFilterElt.setAttribute('aria-selected', 'false')
   dateFilterElt.setAttribute('aria-selected', 'true')
   titleFilterElt.setAttribute('aria-selected', 'false')
+  filterList.setAttribute('aria-activedescendant', 'filter--date')
   
   //Fermeture du menu filtres
   closeFilterList()
@@ -137,7 +141,7 @@ function filterMediaByDate() {
 function filterMediaByTitle() {
   
   //Actualisation des éléments du menu filtres
-  btnToggleFilters.innerHTML = "Titre <i style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></i>"
+  btnToggleFilters.innerHTML = "Titre <span style='margin-left:4.3em;' class='fas fa-angle-down btn-toggle__icon'></span>"
   dateFilterElt.style.display = 'block'
   popularityFilterElt.style.display = 'block'
   titleFilterElt.style.display = 'none'
@@ -146,6 +150,7 @@ function filterMediaByTitle() {
   popularityFilterElt.setAttribute('aria-selected', 'false')
   dateFilterElt.setAttribute('aria-selected', 'false')
   titleFilterElt.setAttribute('aria-selected', 'true')
+  filterList.setAttribute('aria-activedescendant', 'filter--title')
   
   //Fermeture du menu filtres
   closeFilterList()

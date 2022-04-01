@@ -1,4 +1,7 @@
     import apiManager from '../models/apiManager.js'
+
+    //Nav avec clavier
+    document.body.focus()
     
     //Affichage de la grille de photographes
     async function displayData(photographers) {
