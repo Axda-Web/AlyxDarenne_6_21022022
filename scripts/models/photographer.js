@@ -3,7 +3,7 @@ export default class Photographer {
 
     constructor(data){
         Object.assign(this, data)
-        this.picture = `assets/photographers/${this.portrait}`;
+        this.picture = `assets/photographers/${this.portrait}`
     }
 
     //Affichage dans la grille photographes de la page index.html

@@ -6,6 +6,7 @@ import MediaFactory from '../factories/MediaFactory.js'
 //Initialisation des variables
 const lightbox = document.getElementById('lightbox')
 const mainContainer = document.getElementById('main-container')
+const mediaGrid = document.querySelector('.media-grid')
 const mediaContainer = document.querySelector('.media-container')
 let currentMediaIndex = 0
 let currentMedia = {}
@@ -30,7 +31,7 @@ export function showLightbox(event, photographerMedia) {
     currentMedia = photographerMedia[currentMediaIndex]
     const media = new MediaFactory(currentMedia)
 
-    lightbox.style.display = "block"
+    lightbox.style.display = 'block'
     document.body.style.overflowY = 'hidden'
     lightbox.focus()
 
@@ -46,9 +47,9 @@ export function showLightbox(event, photographerMedia) {
 export function closeLightbox() {
     lightbox.setAttribute('aria-hidden', 'true')
     mainContainer.setAttribute('aria-hidden', 'false')
-    lightbox.style.display = "none"
+    lightbox.style.display = 'none'
     document.body.style.overflowY = 'scroll'
-    document.body.focus()
+    mediaGrid.focus()
 }
 
 
@@ -96,18 +97,18 @@ export function lightboxKeyboardNav(event) {
         let isTabPressed = event.key === 'Tab' || event.keyCode === 9;
 
         if (!isTabPressed) {
-            return;
+            return
         }
 
         if (event.shiftKey) {
             if (document.activeElement === lightboxFirstFocusableElement) {
-                lightboxLastFocusableElement.focus();
-                event.preventDefault();
+                lightboxLastFocusableElement.focus()
+                event.preventDefault()
             }
         } else {
             if (document.activeElement === lightboxLastFocusableElement) {
-                lightboxFirstFocusableElement.focus();
-                event.preventDefault();
+                lightboxFirstFocusableElement.focus()
+                event.preventDefault()
             }
         }
     }

@@ -3,7 +3,8 @@
 
 //Initialisation des variables
 const mainContainer = document.getElementById('main-container')
-const modal = document.getElementById("contact_modal");
+const modal = document.getElementById('contact_modal')
+const contactBtn = document.getElementById('open-modal-btn')
 const modalPhotographerName = document.querySelector('.photographer-name')
 
 const firstname = document.getElementById('firstname')
@@ -21,7 +22,7 @@ const modalFormLastFocusableElement = modalFormFocusableContent[modalFormFocusab
 
 //Apparition du formulaire
 function displayContactFormModal(name) {
-	modal.style.display = "block";
+	modal.style.display = 'block'
     modal.focus()
     modal.setAttribute('aria-hidden', 'false')
     document.body.style.overflowY = 'hidden'
@@ -29,7 +30,7 @@ function displayContactFormModal(name) {
     //Accessibilité
     mainContainer.setAttribute('aria-hidden', 'true')
 
-    modalPhotographerName.innerText = name;
+    modalPhotographerName.innerText = name
 }
 
 
@@ -40,13 +41,12 @@ function closeContactFormModal() {
     modal.setAttribute('aria-hidden', 'true')
     mainContainer.setAttribute('aria-hidden', 'false')
 
-    modal.style.display = "none";
+    modal.style.display = 'none'
     document.body.style.overflowY = 'scroll'
     inputs.forEach(input => input.classList.remove('validation'))
     message.classList.remove('validation')
     form.reset()
-    document.body.focus()
-
+    mainContainer.focus()
 }
 
 
@@ -67,12 +67,13 @@ function formSubmit(event) {
         modal.setAttribute('aria-hidden', 'true')
         mainContainer.setAttribute('aria-hidden', 'false')
 
-        modal.style.display = "none";
+        modal.style.display = 'none'
         document.body.style.overflowY = 'scroll'
         inputs.forEach(input => input.classList.remove('validation'))
         message.classList.remove('validation')
         form.reset()
-        document.body.focus()
+        mainContainer.focus()
+        
     } else {
         inputs.forEach(input => input.classList.add('validation'))
         message.classList.add('validation')
@@ -95,18 +96,18 @@ function contactFormKeyboardNav(event) {
         let isTabPressed = event.key === 'Tab' || event.keyCode === 9;
 
         if (!isTabPressed) {
-            return;
+            return
         }
 
         if (event.shiftKey) {
             if (document.activeElement === modalFormFirstFocusableElement) {
-                modalFormLastFocusableElement.focus();
-                event.preventDefault();
+                modalFormLastFocusableElement.focus()
+                event.preventDefault()
             }
         } else {
             if (document.activeElement === modalFormLastFocusableElement) {
-                modalFormFirstFocusableElement.focus();
-                event.preventDefault();
+                modalFormFirstFocusableElement.focus()
+                event.preventDefault()
             }
         } 
     } 

@@ -1,10 +1,21 @@
-* {
+*:focus-visible {
+  outline-color: #2176ff;
   outline-offset: 10px;
 }
 
-header {
+*:-moz-focusring {
+  outline-color: #2176ff;
+  outline-offset: 10px;  
+}
+
+#main-container {
   width: 100%;
   max-width: 1400px;
+  margin: 0 auto;
+  outline: none;
+}
+
+header {
   margin: 2em auto 0;
 }
 
@@ -213,6 +224,7 @@ textarea {
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
   gap: 60px;
+  outline: none;
 }
 
 .media-item {
@@ -257,7 +269,7 @@ textarea {
 /* MEDIA GRID END*/
 
 
-/* ASIDE BOX */
+/* ASIDE BOTTOM RIGHT BOX */
 
 .orange-box {
   width: 250px;
@@ -272,7 +284,7 @@ textarea {
   background-color: #d3573c;
   color: black;
 }
-/* ASIDE BOX END */
+/* ASIDE BOTTOM RIGHT BOX END */
 
 
 /* FILTER SECTION */

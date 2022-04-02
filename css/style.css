@@ -31,8 +31,6 @@ h1 {
 /* PHOTOGRAPHER GRID */
 
 .photographer_section {
-    width: 100%;
-    max-width: 1400px;
     margin: 100px auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -53,7 +51,7 @@ h1 {
     outline-offset: 0;
 }
 
-.photographer_section a:focus {
+.photographer_section a:focus-visible {
     outline: auto;
     outline-color: #2176ff;
 }
