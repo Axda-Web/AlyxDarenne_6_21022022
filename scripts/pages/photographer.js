@@ -110,7 +110,7 @@ function filterMediaByPopularity() {
 function filterMediaByDate() {
   
   //Actualisation des éléments du menu filtres
-  btnToggleFilters.innerHTML = 'Date <span style="margin-left:4.3em;" class="fas fa-angle-down btn-toggle__icon"></span>'
+  btnToggleFilters.innerHTML = 'Date <span style="margin-left:4.2em;" class="fas fa-angle-down btn-toggle__icon"></span>'
   popularityFilterElt.style.display = 'block'
   titleFilterElt.style.display = 'block'
   dateFilterElt.style.display = 'none'
@@ -142,7 +142,7 @@ function filterMediaByDate() {
 function filterMediaByTitle() {
   
   //Actualisation des éléments du menu filtres
-  btnToggleFilters.innerHTML = 'Titre <span style="margin-left:4.3em;" class="fas fa-angle-down btn-toggle__icon"></span>'
+  btnToggleFilters.innerHTML = 'Titre <span style="margin-left:4.2em;" class="fas fa-angle-down btn-toggle__icon"></span>'
   dateFilterElt.style.display = 'block'
   popularityFilterElt.style.display = 'block'
   titleFilterElt.style.display = 'none'
