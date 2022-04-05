@@ -64,6 +64,7 @@ header a {
 }
 /* PHOTOGRAPHER HEADER END */
 
+
 /* CONTACT MODAL */
 
 #contact_modal {
@@ -73,7 +74,7 @@ header a {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: rgba(0, 0, 0, .5);
   z-index: 10;
   overflow-y: scroll;
 }
@@ -110,7 +111,7 @@ header a {
   align-items: center;
   justify-content: space-between;
   padding: 35px 35px 15px;
-  margin: 2em auto;
+  margin: 4em auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -213,6 +214,7 @@ textarea {
   border: 2px solid red;
 }
 /* CONTACT MODAL END */
+
 
 /* MEDIA GRID */
 
