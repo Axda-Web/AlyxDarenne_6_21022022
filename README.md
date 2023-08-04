@@ -6,10 +6,9 @@
 
 ![screenshot](/screenshot.jpg)
 
-
 ## Description
 
-Build an accessible website for the Fisheye platform. Implementation of dynamic components via JavaScript (form, filters, lightbox). Set up accessibility best practices (semantic tags, aria/alt attributes, color contrast).   
+Build an accessible website for the Fisheye platform. Implementation of dynamic components via JavaScript (form, filters, lightbox). Set up accessibility best practices (semantic tags, aria/alt attributes, color contrast).
 
 This project explores various concepts and features including:
 
@@ -28,7 +27,6 @@ and more.
 - [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
 - [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
-
 ## Getting Started
 
 To get started with the Fisheye project, follow the steps below:
@@ -39,16 +37,8 @@ To get started with the Fisheye project, follow the steps below:
    git clone git@github.com:Axda-Web/fisheye.git
    ```
 
-2. Change into the project directory:
+2. Open the project with the IDE (e.g. [VSCode](https://code.visualstudio.com/)) of your choice:
 
-   ```shell
-   cd fisheye
-   ```
-
-3. Install the project dependencies:
-
-   ```shell
-   npm install
-   ```
+3. Use a local development server to open the `index.html` file (e.g. [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)):
 
 A deployed version of the Fisheye project is available on Vercel at [Fisheye](https://fisheye-ez0pmi6a7-axda-web.vercel.app/).
